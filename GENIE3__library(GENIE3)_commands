@@ -1,0 +1,12 @@
+library(GENIE3)
+library(igraph)
+mycounts  <- read.delim("~/jupyter/CleanSoy1000.txt", header=TRUE, row.names=1)
+weightMat <- GENIE3(as.matrix(mycounts))
+weightMat <- GENIE3(as.matrix(mycounts), treeMethod="RF", K=7, nTrees=10)
+weightMat <- GENIE3(as.matrix(mycounts), nCores=4, verbose=TRUE)
+linkList <- getLinkList(weightMat, threshold=0.011)
+write.table(linkList, "~/jupyter/MappedNetworkLinklist.txt")
+adjm <- read.delim("~/jupyter/MappedNetworkLinklist.txt", header=
+TRUE, row.names=1)
+Gsi <- graph.data.frame(adjm, directed=TRUE)
+plot(Gsi)
